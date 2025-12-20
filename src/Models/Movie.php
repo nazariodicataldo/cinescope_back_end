@@ -25,13 +25,13 @@ class Movie extends BaseModel {
     }
 
     protected static function validationRules(): array {
-        $current_year = (int)date('Y', 'now');
+        $current_year = (int)date('Y');
 
         return [
-            "title" => ["required", "min:2", "max:100"],
+            "title" => ["required", "sometimes", "min:2", "max:100"],
             "production_year" => ["numeric", "min:1900", "max:{$current_year}"],
             "nationality" => ["min:2", "max:50"],
-            "director" => ["required", "min:2", "max:50"],
+            "director" => ["required", "sometimes", "min:2", "max:50"],
             "genre" => ["min:2", "max:50"],
         ];
     }

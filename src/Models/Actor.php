@@ -23,9 +23,9 @@ class Actor extends BaseModel {
     }
 
     protected static function validationRules(): array {
-        $current_year = (int)date('Y', 'now');
+        $current_year = (int)date('Y');
         return [
-            "name" => ["required", "min:2", "max:50"],
+            "name" => ["required", "sometimes", "min:2", "max:50"],
             "birth_year" => ["numeric", "min:1900", "max:{$current_year}"],
             "nationality" => ["min:2", "max:50"]
         ];

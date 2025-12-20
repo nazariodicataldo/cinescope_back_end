@@ -24,9 +24,9 @@ class Hall extends BaseModel {
 
     protected static function validationRules(): array {
         return [
-            "name" => ["required", "min:2", "max:100"],
+            "name" => ["required", "sometimes", "min:2", "max:100"],
             "places" => ["numeric", "min:0", "max:150"],
-            "city" => ["required", "min:2", "max:50"],
+            "city" => ["required", "sometimes", "min:2", "max:50"],
         ];
     }
 

@@ -25,8 +25,8 @@ class Projection extends BaseModel {
 
     protected static function validationRules(): array {
         return [
-            "movie_id" => ["required", "numeric", "min:1", "max:50"],
-            "places" => ["required", "numeric", "min:1", "max:50"],
+            "movie_id" => ["required", "sometimes", "numeric", "min:1", "max:50"],
+            "places" => ["required", "sometimes", "numeric", "min:1", "max:50"],
             "takings" => ["numeric", "min:0"],
             "projection_date" => ["datetime"]
         ];

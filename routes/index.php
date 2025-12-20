@@ -10,7 +10,7 @@ use App\Utils\Response;
 // Route di benvenuto
 Router::get('/', function() {
     Response::success([
-        'message' => 'Benvenuto nella REST API',
+        'message' => 'Benvenuto nel Cinema API',
         'version' => '1.0.0',
     ])->send();
 });
