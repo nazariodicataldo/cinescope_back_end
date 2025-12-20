@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Traits\WithValidate;
 use App\Database\DB;
 
-class User extends BaseModel {
+class Actor extends BaseModel {
 
     use WithValidate;
 
@@ -26,8 +26,8 @@ class User extends BaseModel {
         $current_year = (int)date('Y', 'now');
         return [
             "name" => ["required", "min:2", "max:50"],
-            "birth_year" => ["required", "numeric", "min:1900", "max:{$current_year}"],
-            "nationality" => ["required", "min:2", "max:50"]
+            "birth_year" => ["numeric", "min:1900", "max:{$current_year}"],
+            "nationality" => ["min:2", "max:50"]
         ];
     }
 
