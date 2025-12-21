@@ -18,8 +18,54 @@ class Hall extends BaseModel {
      */
     protected static ?string $table = "halls";
 
+    //Whitelist di filtri permessi per questa classe 
+    protected static array $allowed_filters = ['city', 'places_from', 'places_to', 'name'];
+
     public function __construct(array $data = []) {
         parent::__construct($data);
+    }
+
+    public static function filter(array $params): array
+    {
+        $conditions = []; //Conterrà tutte gli AND
+        $bindings = [];
+
+        if (isset($params['places_from'])) {
+            static::filterByPlacesFrom((int)$params['places_from'], $conditions, $bindings);
+        }
+
+        if (isset($params['places_to'])) {
+            static::filterByPlacesTo((int)$params['places_to'], $conditions, $bindings);
+        }
+
+        if (isset($params['name'])) {
+            static::search($params['name'], 'name' ,$conditions, $bindings);
+        }
+
+        if (isset($params['city'])) {
+            static::search($params['city'], 'city' ,$conditions, $bindings);
+        }
+
+        $where = '';
+        if ($conditions) {
+            $where = ' WHERE ' . implode(' AND ', $conditions);
+        }
+
+        $sql = "SELECT * FROM " . static::getTableName() . $where;
+
+        $rows = DB::select($sql, $bindings);
+
+        return array_map(fn($row) => new static($row), $rows);
+    }
+
+    protected static function filterByPlacesFrom(int $value, array &$conditions, array &$bindings):void {
+        $conditions[] = 'places >= :places_from';
+        $bindings[':places_from'] = $value;
+    }
+
+    protected static function filterByPlacesTo(int $value, array &$conditions, array &$bindings):void {
+        $conditions[] = 'places <= :places_to';
+        $bindings[':places_to'] = $value;
     }
 
     protected static function validationRules(): array {

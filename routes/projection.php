@@ -13,8 +13,13 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
  */
 Router::get('/projections', function () {
     try {
-        $projection = Projection::all();
-        Response::success($projection)->send();
+        $params = Projection::filterParams($_GET);
+
+        $projections = $params !== null 
+            ? Projection::filter($params) 
+            : Projection::all();
+
+        Response::success($projections)->send();
     } catch (\Exception $e) {
         Response::error("Errore nel recupero delle proiezioni: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }

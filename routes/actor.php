@@ -16,12 +16,9 @@ Router::get('/actors', function () {
         $params = Actor::filterParams($_GET);
 
         //Verifico se ci sono delle query string
-        if($params !== null) {
-            $actors = Actor::filter($params);
-        } else {
-            //altrimenti, prendi tutti i risultati
-            $actors = Actor::all();
-        }
+        $actors = $params !== null 
+            ? Actor::filter($params) 
+            : Actor::all();
         
         Response::success($actors)->send();
     } catch (\Exception $e) {

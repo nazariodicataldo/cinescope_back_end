@@ -39,19 +39,19 @@ class Actor extends BaseModel {
         $conditions = []; //Conterrà tutte gli AND
         $bindings = [];
 
-        if (!empty($params['nationality'])) {
+        if (isset($params['nationality'])) {
             static::filterByNationality($params['nationality'], $conditions, $bindings);
         }
 
-        if (!empty($params['birth_year_from'])) {
+        if (isset($params['birth_year_from'])) {
             static::filterByBirthYearFrom((int)$params['birth_year_from'], $conditions, $bindings);
         }
 
-        if (!empty($params['birth_year_to'])) {
+        if (isset($params['birth_year_to'])) {
             static::filterByBirthYearTo((int)$params['birth_year_to'], $conditions, $bindings);
         }
 
-        if (!empty($params['name'])) {
+        if (isset($params['name'])) {
             static::search($params['name'], 'name' ,$conditions, $bindings);
         }
 
@@ -108,9 +108,7 @@ class Actor extends BaseModel {
     protected static function filterByBirthYearTo(int $value, array &$conditions, array &$bindings):void {
         $conditions[] = 'birth_year <= :birth_year_to';
         $bindings[':birth_year_to'] = $value;
-    }
-
-    
+    }  
 
     protected function movies()
     {

@@ -13,9 +13,14 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
  */
 Router::get('/halls', function () {
     try {
-        $hall = Hall::all();
+        $params = Hall::filterParams($_GET);
 
-        Response::success($hall)->send();
+        //Verifico se ci sono delle query string
+        $halls = $params !== null 
+            ? Hall::filter($params) 
+            : Hall::all();
+
+        Response::success($halls)->send();
     } catch (\Exception $e) {
         Response::error("Errore nel recupero delle sale: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }

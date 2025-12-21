@@ -59,7 +59,7 @@ abstract class BaseModel
         if(!empty($_GET)) {
             //se non è vuoto filtro rimuovo tutti quei filtri che non sono nella whitelist
             $params = array_filter($_GET, function ($value) {
-                return in_array($value, Actor::getAllowedFilters());
+                return in_array($value, static::getAllowedFilters());
             }, ARRAY_FILTER_USE_KEY);
         }
 

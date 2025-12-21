@@ -13,8 +13,14 @@ use Pecee\SimpleRouter\SimpleRouter as Router;
  */
 Router::get('/movies', function () {
     try {
-        $movie = Movie::all();
-        Response::success($movie)->send();
+        $params = Movie::filterParams($_GET);
+
+        //Verifico se ci sono delle query string
+        $movies = $params !== null 
+            ? Movie::filter($params) 
+            : Movie::all();
+
+        Response::success($movies)->send();
     } catch (\Exception $e) {
         Response::error("Errore nel recupero dei film: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }
