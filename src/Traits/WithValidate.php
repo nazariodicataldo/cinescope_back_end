@@ -167,6 +167,24 @@ trait WithValidate
                 }
                 break;
 
+            case 'datetime':
+                if ($value !== null && $value !== '' && !strtotime($value)) {
+                    return $customMessage ?? "Il campo {$field} deve essere una data";
+                }
+                break;
+
+            case 'bool':
+                if ($value !== null && $value !== '' && !is_bool($value)) {
+                    return $customMessage ?? "Il campo {$field} deve essere un booleano";
+                }
+                break;
+
+            case 'url':
+                if ($value !== null && $value !== '' && !parse_url($value)) {
+                    return $customMessage ?? "Il campo {$field} deve essere un URL";
+                }
+                break;
+
             case 'email':
                 if ($value !== null && $value !== '' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     return $customMessage ?? "Il campo {$field} deve essere un'email valida";
