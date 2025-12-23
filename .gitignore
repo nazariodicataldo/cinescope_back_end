@@ -20,6 +20,9 @@ config.local.php
 Thumbs.db
 desktop.ini
 
+# Uploads
+/public/uploads
+
 # File di log
 *.log
 logs/

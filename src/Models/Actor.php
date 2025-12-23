@@ -12,6 +12,7 @@ class Actor extends BaseModel {
     public ?string $name = null;
     public ?int $birth_year = null;
     public ?string $nationality = null;
+    public ?string $image_path = null;
 
     //Whitelist di filtri permessi per questa classe 
     protected static array $allowed_filters = [

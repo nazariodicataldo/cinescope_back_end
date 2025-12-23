@@ -14,6 +14,7 @@ class Movie extends BaseModel {
     public ?string $nationality = null;
     public ?string $director = null;
     public ?string $genre = null;
+    public ?string $image_path = null;
 
     //Whitelist di filtri permessi per questa classe 
     protected static array $allowed_filters = [
