@@ -21,6 +21,7 @@ class Hall extends BaseModel {
     //Whitelist di filtri permessi per questa classe 
     protected static array $allowed_filters = [
         "order_by", 
+        'limit',
         "order",
         'city', 
         'places_from',
@@ -58,12 +59,15 @@ class Hall extends BaseModel {
         $order = $params['order'] ?? 'ASC';
         $order_by = static::orderBy($column, $order, $conditions, $bindings);
 
+        //Limit
+        $limit = static::limit($params['limit'] ?? null);
+
         $where = '';
         if ($conditions) {
             $where = ' WHERE ' . implode(' AND ', $conditions);
         }
 
-        $sql = "SELECT * FROM " . static::getTableName() . $where . $order_by;
+        $sql = "SELECT * FROM " . static::getTableName() . $where . $order_by . $limit;
 
         $rows = DB::select($sql, $bindings);
 

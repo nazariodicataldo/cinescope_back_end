@@ -18,6 +18,7 @@ class Actor extends BaseModel {
     protected static array $allowed_filters = [
         "order_by", 
         "order",
+        'limit',
         'nationality', 
         'birth_year_from', 
         'birth_year_to',
@@ -68,12 +69,15 @@ class Actor extends BaseModel {
         $order = $params['order'] ?? 'ASC';
         $order_by = static::orderBy($column, $order, $conditions, $bindings);
 
+        //Limit
+        $limit = static::limit($params['limit'] ?? null);
+
         $where = '';
         if ($conditions) {
             $where = ' WHERE ' . implode(' AND ', $conditions);
         }
 
-        $sql = "SELECT * FROM " . static::getTableName() . $where . $order_by;
+        $sql = "SELECT * FROM " . static::getTableName() . $where . $order_by . $limit;
 
         $rows = DB::select($sql, $bindings);
 
@@ -101,14 +105,14 @@ class Actor extends BaseModel {
             foreach ($value as $i => $val) {
                 $ph = ":nationality_$i";
                 $placeholders[] = $ph;
-                $bindings[$ph] = trim($val);
+                $bindings[$ph] = strtolower(trim($val));
             }
 
-            $conditions[] = 'nationality IN (' . implode(',', $placeholders) . ')'; // nationality IN (:nationality_0,:nationality_1)
+            $conditions[] = 'LOWER(nationality) IN (' . implode(',', $placeholders) . ')'; // nationality IN (:nationality_0,:nationality_1)
 
         } else {
-            $conditions[] = 'nationality = :nationality';
-            $bindings[':nationality'] = trim($value);
+            $conditions[] = 'LOWER(nationality) = :nationality';
+            $bindings[':nationality'] = strtolower(trim($value));
         }
 
     }

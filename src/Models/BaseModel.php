@@ -87,6 +87,14 @@ abstract class BaseModel
     }
 
     /**
+     * Restituisce un numero arbitrario di elementi
+     */
+    protected static function limit(string $limit = null): ?string {
+        //Ritorno la stringa di query solo se è presente il parametro
+        return isset($limit) ? " LIMIT $limit" : " LIMIT NULL";
+    } 
+
+    /**
      * Restuisce record che hanno una determinata sottostringa 
     */
     protected static function search(string $value, string $column, array &$conditions, array &$bindings):void {
