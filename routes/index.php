@@ -11,7 +11,7 @@ use App\Utils\Response;
 Router::get('/', function() {
     Response::success([
         'message' => 'Benvenuto nel Cinema API',
-        'version' => '1.0.3',
+        'version' => '1.0.4',
     ])->send();
 });
 

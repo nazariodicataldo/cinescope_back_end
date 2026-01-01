@@ -44,6 +44,20 @@ Router::get('/movies/{id}', function ($id) {
 });
 
 /**
+ * GET /api/movies/nationalities - Lista di tutte le nazionalità
+ */
+Router::get('/movies/nationalities', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $nationalities = Movie::getAllNationality();
+
+        Response::success($nationalities)->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero delle nazionalità: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
  * GET /api/movies/{id}/actors - Casting di un film
  */
 Router::get('/movies/{id}/actors', function ($id) {

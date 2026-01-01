@@ -27,6 +27,20 @@ Router::get('/actors', function () {
 });
 
 /**
+ * GET /api/actors/nationalities - Lista di tutte le nazionalità
+ */
+Router::get('/actors/nationalities', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $nationalities = Actor::getAllNationality();
+
+        Response::success($nationalities)->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero delle nazionalità: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
  * GET /api/actors/{id} - Lista utenti
  */
 Router::get('/actors/{id}', function ($id) {

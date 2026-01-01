@@ -135,6 +135,10 @@ class Movie extends BaseModel {
         $bindings[':production_year_to'] = $value;
     } 
 
+    public static function getAllNationality(): array {
+        return DB::select("SELECT DISTINCT nationality FROM " . static::getTableName());
+    }
+
     protected function actors()
     {
         return $this->belongsToMany(Actor::class);

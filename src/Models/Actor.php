@@ -127,6 +127,10 @@ class Actor extends BaseModel {
         $bindings[':birth_year_to'] = $value;
     }  
 
+    public static function getAllNationality(): array {
+        return DB::select("SELECT DISTINCT nationality FROM " . static::getTableName());
+    }
+
     protected function movies()
     {
         return $this->belongsToMany(Movie::class);
