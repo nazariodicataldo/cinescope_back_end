@@ -78,6 +78,43 @@ Router::get('/actors/max_birth_year', function() {
 });
 
 /**
+ * GET /api/actors/min_birth_year - Anno più basso
+ */
+Router::get('/actors/min_birth_year', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $min = Actor::getMinYear();
+
+        if(empty($min)) {
+            Response::error("Nessun anno minimo trovato", Response::HTTP_BAD_REQUEST)->send();
+        }
+
+        Response::success($min[0])->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero dell'anno di nascita più basso: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
+ * GET /api/actors/max_birth_year - Anno più alto
+ */
+Router::get('/actors/max_birth_year', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $max = Actor::getMaxYear();
+
+        if(empty($max)) {
+            Response::error("Nessun anno massimo trovato", Response::HTTP_BAD_REQUEST)->send();
+
+        }
+
+        Response::success($max[0])->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero dell'anno di nascita più alto: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
  * GET /api/actors/{id} - Lista utenti
  */
 Router::get('/actors/{id}', function ($id) {
@@ -95,10 +132,10 @@ Router::get('/actors/{id}', function ($id) {
 });
 
 /* 
-    * GET /api/actors/{id}/movies - Lista di film in cui ha recitato l'attore
+    * GET /api/actors/{id}/actors - Lista di film in cui ha recitato l'attore
 */
 
-Router::get('/actors/{id}/movies', function ($id) {
+Router::get('/actors/{id}/actors', function ($id) {
     try {
         $actor = Actor::find($id);
 
@@ -107,9 +144,12 @@ Router::get('/actors/{id}/movies', function ($id) {
         }
 
         //Mi prendo i film dell'attore
-        $movies = $actor->movies;
+        $actors = $actor->actors;
 
-        Response::success($movies)->send();
+        //Sort dell'array di film, per mostrare prima i film meno recenti
+        array_multisort(array_column($actors, 'production_year'), $actors);
+
+        Response::success($actors)->send();
     } catch (\Exception $e) {
         Response::error("Errore nel recupero degli attori: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }

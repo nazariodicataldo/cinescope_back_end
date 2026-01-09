@@ -27,6 +27,56 @@ Router::get('/halls', function () {
 });
 
 /**
+ * GET /api/halls/cities - Lista di tutte le città
+ */
+Router::get('/halls/cities', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $cities = Hall::getAllCities();
+
+        Response::success($cities)->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero delle nazionalità: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
+ * GET /api/halls/min_place - numero di posti più basso
+ */
+Router::get('/halls/min_place', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $min = Hall::getMinPlace();
+
+        if(empty($min)) {
+            Response::error("Nessun numero di posti minimo trovato", Response::HTTP_BAD_REQUEST)->send();
+        }
+
+        Response::success($min[0])->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero del numero di posti più basso: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
+ * GET /api/halls/max_place - numero di posti più alto
+ */
+Router::get('/halls/max_place', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $max = Hall::getMaxPlace();
+
+        if(empty($max)) {
+            Response::error("Nessun numero di posti massimo trovato", Response::HTTP_BAD_REQUEST)->send();
+        }
+
+        Response::success($max[0])->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero del numero di posti più alto: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
  * GET /api/halls/{id} - Lista sale
  */
 Router::get('/halls/{id}', function ($id) {
@@ -46,7 +96,7 @@ Router::get('/halls/{id}', function ($id) {
 /**
  * GET /api/halls/{id}/projections - Lista proiezioni di una sala
  */
-Router::get('/halls/{id}/movies', function ($id) {
+Router::get('/halls/{id}/projections', function ($id) {
     try {
         $hall = Hall::find($id);
 
@@ -58,11 +108,11 @@ Router::get('/halls/{id}/movies', function ($id) {
         $projections = $hall->projections;
 
         //Per ogni proiezioni, mi prendo il film collegato
-        $movies = array_map(function ($proj) {
-            return $proj->movie;
+        $projections = array_map(function ($proj) {
+            return [...(array)$proj, "movie" => $proj->movie];
         }, $projections);
 
-        Response::success($movies)->send();
+        Response::success($projections)->send();
     } catch (\Exception $e) {
         Response::error("Errore nel recupero delle sale: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }

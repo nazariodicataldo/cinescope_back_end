@@ -12,6 +12,7 @@ class Hall extends BaseModel {
     public ?string $name = null;
     public ?int $places = null;
     public ?string $city = null;
+    public ?string $image_path = null;
 
     /**
      * Nome della collection
@@ -90,6 +91,20 @@ class Hall extends BaseModel {
             "places" => ["numeric", "min:0", "max:150"],
             "city" => ["required", "sometimes", "min:2", "max:50"],
         ];
+    }
+
+    public static function getAllCities(): array {
+        return DB::select("SELECT DISTINCT city FROM " . static::getTableName());
+    }
+
+    //Get min place number
+    public static function getMinPlace(): array {
+        return DB::select("SELECT DISTINCT MIN(places) FROM " . static::getTableName());
+    }
+
+    //Get max birth number
+    public static function getMaxPlace(): array {
+        return DB::select("SELECT DISTINCT MAX(places) FROM " . static::getTableName());
     }
 
     protected function projections()

@@ -59,11 +59,11 @@ class Movie extends BaseModel {
             static::filterByNationality($params['nationality'], $conditions, $bindings);
         }
 
-        if (isset($params['birth_year_from'])) {
+        if (isset($params['production_year_from'])) {
             static::filterByProductionYearFrom((int)$params['production_year_from'], $conditions, $bindings);
         }
 
-        if (isset($params['birth_year_to'])) {
+        if (isset($params['production_year_to'])) {
             static::filterByProductionYearTo((int)$params['production_year_to'], $conditions, $bindings);
         }
 
@@ -135,8 +135,19 @@ class Movie extends BaseModel {
         $bindings[':production_year_to'] = $value;
     } 
 
+    //Get all nationalities
     public static function getAllNationality(): array {
         return DB::select("SELECT DISTINCT nationality FROM " . static::getTableName());
+    }
+
+    //Get all directors
+    public static function getAllDirectors(): array {
+        return DB::select("SELECT DISTINCT director FROM " . static::getTableName());
+    }
+
+    //Get all genre
+    public static function getAllGenres(): array {
+        return DB::select("SELECT DISTINCT genre FROM " . static::getTableName());
     }
 
     //Get min birth year

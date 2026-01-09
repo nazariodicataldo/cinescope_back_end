@@ -27,23 +27,6 @@ Router::get('/movies', function () {
 });
 
 /**
- * GET /api/movies/{id} - Lista film
- */
-Router::get('/movies/{id}', function ($id) {
-    try {
-        $movie = Movie::find($id);
-
-        if($movie === null) {
-            Response::error('Film non trovato', Response::HTTP_NOT_FOUND)->send();
-        }
-
-        Response::success($movie)->send();
-    } catch (\Exception $e) {
-        Response::error("Errore nel recupero dei film: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
-    }
-});
-
-/**
  * GET /api/movies/min_birth_year - Anno più basso
  */
 Router::get('/movies/min_production_year', function() {
@@ -91,6 +74,51 @@ Router::get('/movies/nationalities', function() {
         Response::success($nationalities)->send();
     } catch(\Exception $e) {
         Response::error("Errore nel recupero delle nazionalità: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
+ * GET /api/movies/genres - Lista di tutti i generi cinematografici
+ */
+Router::get('/movies/genres', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $genres = Movie::getAllGenres();
+
+        Response::success($genres)->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero delle nazionalità: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
+ * GET /api/movies/directors - Lista di tutti i registi
+ */
+Router::get('/movies/directors', function() {
+    try {
+        //Mi prendo tutte le nazionalità
+        $directors = Movie::getAllDirectors();
+
+        Response::success($directors)->send();
+    } catch(\Exception $e) {
+        Response::error("Errore nel recupero dei registi: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+    }
+});
+
+/**
+ * GET /api/movies/{id} - Lista film
+ */
+Router::get('/movies/{id}', function ($id) {
+    try {
+        $movie = Movie::find($id);
+
+        if($movie === null) {
+            Response::error('Film non trovato', Response::HTTP_NOT_FOUND)->send();
+        }
+
+        Response::success($movie)->send();
+    } catch (\Exception $e) {
+        Response::error("Errore nel recupero dei film: " . $e->getMessage() . " " . $e->getFile() . " " . $e->getLine(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }
 });
 
