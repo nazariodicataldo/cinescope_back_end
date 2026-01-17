@@ -56,9 +56,13 @@ Il backend è pensato per simulare un database reale con filtri, ordinamenti e e
 
     * nazionalità
 
+<<<<<<< HEAD
     * città
 
 ## Stato
 
 Backend stabile e pronto per essere esteso con **operazioni CRUD complete**.
 Attualmente ottimizzato per la consultazione dei dati.
+=======
+    * città
+>>>>>>> 288bde4a2ab4c83d7c5577bcda28ac61ae3e75ba
